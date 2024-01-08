@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+
+  pg1:
+    image: postgres
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_NAME
+    ports:
+      - "6666:5432"
+    networks:
+      - network1
+
+  node1:
+    build:
+      context: .
+      target: $NODE_DOCKER_BUILD_TARGET
+    environment:
+      - NODE_ENV
+      - DB_USER
+      - DB_PASSWORD
+      - DB_NAME
+    ports:
+      - "3333:3000"
+    networks:
+      - network1
+    volumes:
+      - ./src:/opt/src
+    depends_on:
+      - pg1
+
+networks:
+  network1:
