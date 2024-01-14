@@ -1,13 +1,11 @@
 FROM node:20-alpine AS core
-ARG USER=node1
+ARG USER=node_app_user
 RUN addgroup --system $USER
 RUN adduser --system --ingroup $USER $USER
 RUN mkdir -p /opt/node
 WORKDIR /opt/node
 COPY package*.json ./
-COPY migrations ./migrations
 RUN chown -R $USER:$USER /opt/node && chmod -R 755 /opt/node
-RUN chown -R $USER:$USER ./migrations && chmod -R 755 ./migrations
 USER $USER
 
 FROM core AS development

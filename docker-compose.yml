@@ -5,7 +5,7 @@ services:
   pg1:
     image: postgres
     environment:
-      - POSTGRES_USER=$DB_USER
+      - POSTGRES_USER=$DB_USERNAME
       - POSTGRES_PASSWORD=$DB_PASSWORD
       - POSTGRES_DB=$DB_NAME
     ports:
@@ -19,7 +19,9 @@ services:
       target: $NODE_DOCKER_BUILD_TARGET
     environment:
       - NODE_ENV
-      - DB_USER
+      - DB_HOST
+      - DB_PORT
+      - DB_USERNAME
       - DB_PASSWORD
       - DB_NAME
     ports:
@@ -27,7 +29,11 @@ services:
     networks:
       - network1
     volumes:
-      - ./src:/opt/src
+      - ./src:/opt/node/src
+      - ./node_modules:/opt/node/node_modules
+      - ./package.json:/opt/node/package.json
+      - ./package-lock.json:/opt/node/package-lock.json
+      - ./tsconfig.json:/opt/node/tsconfig.json
     depends_on:
       - pg1
 
