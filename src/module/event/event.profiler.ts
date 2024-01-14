@@ -11,6 +11,27 @@ import {
 import { EventDto } from "@src/module/event/event.dto";
 import { Event } from "@src/database/entity/event.entity";
 
+type bracketType = "(" | ")" | "[" | "]"
+const getRangeDate = (
+  bracket: bracketType,
+  dateStr: string,
+): string => {
+  if (bracket === '[' || bracket === ']') {
+    return dateStr
+  }
+
+  const date = new Date(dateStr)
+  if (bracket === '(') {
+    date.setDate(date.getDate() + 1)
+  }
+
+  if (bracket === ')') {
+    date.setDate(date.getDate() - 1)
+  }
+
+  return date.toISOString().slice(0, 10)
+}
+
 @Injectable()
 export class EventProfile extends AutomapperProfile {
   constructor(@InjectMapper() mapper: Mapper) {
@@ -31,12 +52,12 @@ export class EventProfile extends AutomapperProfile {
 
         forMember(
           (dest: EventDto) => dest.startDate,
-          mapFrom((s: Event) => s.during.slice(1, 11)),
+          mapFrom((s: Event) => getRangeDate(<bracketType>s.during[0], s.during.slice(1, 11))),
         ),
 
         forMember(
           (dest: EventDto) => dest.endDate,
-          mapFrom((s: Event) => s.during.slice(12, 22)),
+          mapFrom((s: Event) => getRangeDate(<bracketType>s.during[22], s.during.slice(12, 22))),
         ),
       )
 
