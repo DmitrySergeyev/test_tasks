@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Get, Post } from "@nestjs/common";
-import { QueryFailedError, Repository } from "typeorm";
+import { Repository, TypeORMError } from "typeorm";
 import { Mapper } from "@automapper/core";
 import { InjectMapper } from "@automapper/nestjs";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -22,12 +22,12 @@ export class EventController {
   @Post()
   async post(@Body() eventDto: CreateEventDto): Promise<EventDto> {
     try {
-      const event = this.mapper.map(eventDto, EventDto, Event)
+      const event = this.mapper.map(eventDto, CreateEventDto, Event)
       const savedEvent = await this.eventRepository.save(event)
       return this.mapper.map(savedEvent, Event, EventDto)
     } catch (e) {
       if (
-        e instanceof QueryFailedError &&
+        e instanceof TypeORMError &&
         e.message === `conflicting key value violates exclusion constraint "reservation_during_excl"`
       ) {
         throw new BadRequestException("The selected dates are already occupied");

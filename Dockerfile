@@ -10,6 +10,7 @@ USER $USER
 
 FROM core AS development
 COPY src ./src
+COPY specs ./specs
 COPY test ./test
 COPY tsconfig*.json ./
 COPY nest-cli.json .

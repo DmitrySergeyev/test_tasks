@@ -30,10 +30,12 @@ services:
       - network1
     volumes:
       - ./src:/opt/node/src
+      - ./specs:/opt/node/specs
       - ./node_modules:/opt/node/node_modules
       - ./package.json:/opt/node/package.json
       - ./package-lock.json:/opt/node/package-lock.json
       - ./tsconfig.json:/opt/node/tsconfig.json
+      - ./jest.config.js:/opt/node/jest.config.js
     depends_on:
       - pg1
 

@@ -8,7 +8,7 @@ import {
   MappingProfile,
   typeConverter,
 } from "@automapper/core";
-import { EventDto } from "@src/module/event/event.dto";
+import { CreateEventDto, EventDto } from "@src/module/event/event.dto";
 import { Event } from "@src/database/entity/event.entity";
 
 type bracketType = "(" | ")" | "[" | "]"
@@ -61,7 +61,7 @@ export class EventProfile extends AutomapperProfile {
         ),
       )
 
-      createMap<EventDto, Event>(
+      createMap<CreateEventDto, Event>(
         mapper,
         EventDto,
         Event,

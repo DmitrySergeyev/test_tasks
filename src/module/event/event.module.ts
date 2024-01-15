@@ -7,7 +7,6 @@ import { EventProfile } from "@src/module/event/event.profiler";
 import { AutomapperModule } from "@automapper/nestjs";
 import { classes } from "@automapper/classes";
 
-import { EventService } from "./event.service";
 import { EventController } from "./event.controller";
 
 @Module({
@@ -22,7 +21,6 @@ import { EventController } from "./event.controller";
     }),
   ],
   providers: [
-    EventService,
     Logger,
     EventProfile,
   ],

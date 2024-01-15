@@ -13,7 +13,7 @@ export const baseOptions: PostgresConnectionOptions = {
   },
 }
 
-const DataSourceConfig = new DataSource({
+export const DataSourceConfig = new DataSource({
   ...baseOptions,
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -23,5 +23,3 @@ const DataSourceConfig = new DataSource({
   entities: ['./src/database/entity/**/*{.js,.ts}'],
   migrations: ['./src/database/migration/**/*{.js,.ts}'],
 })
-
-export default DataSourceConfig;
