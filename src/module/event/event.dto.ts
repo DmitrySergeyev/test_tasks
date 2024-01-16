@@ -1,10 +1,7 @@
 import { AutoMap } from "@automapper/classes"
 import { IsNotEmpty, IsString, MaxLength, IsDateString } from "class-validator";
-import { OmitType } from "@nestjs/mapped-types"
 
-export class EventDto {
-  id: number;
-
+export class CreateEventDto {
   @AutoMap()
   @IsString()
   @IsNotEmpty()
@@ -25,4 +22,6 @@ export class EventDto {
   endDate: string;
 }
 
-export class CreateEventDto extends OmitType(EventDto, ["id"]) {}
+export class EventDto extends CreateEventDto {
+  id: number;
+}

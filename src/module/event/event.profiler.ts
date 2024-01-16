@@ -63,7 +63,7 @@ export class EventProfile extends AutomapperProfile {
 
       createMap<CreateEventDto, Event>(
         mapper,
-        EventDto,
+        CreateEventDto,
         Event,
 
         typeConverter(String, Number, str => Number(str)),

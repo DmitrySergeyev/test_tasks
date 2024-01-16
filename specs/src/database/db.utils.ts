@@ -45,14 +45,6 @@ export class DbUtils {
   }
 
   async cleanAllRepositories (repositories: Repository<any>[]): Promise<void> {
-    await Promise.all(repositories.map(repository => {
-      const tableName = repository.metadata.tableName
-      return repository.query(`TRUNCATE TABLE ${tableName} CASCADE;`)
-    }))
-  }
-
-  async cleanAllRepositoriesSync (repositories: Repository<any>[]): Promise<void> {
-    // eslint-disable-next-line no-restricted-syntax
     for (const repo of repositories) {
       await this.cleanRepository(repo)
     }

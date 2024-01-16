@@ -31,6 +31,7 @@ services:
     volumes:
       - ./src:/opt/node/src
       - ./specs:/opt/node/specs
+      - ./test:/opt/node/test
       - ./node_modules:/opt/node/node_modules
       - ./package.json:/opt/node/package.json
       - ./package-lock.json:/opt/node/package-lock.json
