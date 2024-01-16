@@ -19,13 +19,13 @@ const description = faker.hacker.phrase();
 const startDate = "2000-01-01";
 const endDate = "2000-01-02";
 
-const eventToSave: DeepPartial<Event> = {
+const event: DeepPartial<Event> = {
   name,
   during: `[${startDate},${endDate}]`,
   description,
 };
 
-const expectedObject: DeepPartial<EventDto> = {
+const createEventBody: DeepPartial<EventDto> = {
   name,
   description,
   endDate,
@@ -64,32 +64,31 @@ describe(`${EventController.name} - e2e`, () => {
 
   describe("GET /event", () => {
     it("should get events", async () => {
-      await eventRepository.save(eventToSave)
+      await eventRepository.save(event)
       const response: Response = await request(app.getHttpServer()).get(path)
 
       expect(response.status).toBe(HttpStatus.OK)
       expect(response.body).toBeArrayOfSize(1)
-      expect(response.body[0]).toEqual(expect.objectContaining(expectedObject))
+      expect(response.body[0]).toEqual(expect.objectContaining(createEventBody))
     })
   })
 
   describe("POST /event", () => {
     it("should create and return event", async () => {
-      const response: Response = await request(app.getHttpServer()).post(path).send(eventToSave)
+      const response: Response = await request(app.getHttpServer()).post(path).send(createEventBody)
 
       expect(response.status).toBe(HttpStatus.CREATED)
-      expect(response.body).toBeArrayOfSize(1)
-      expect(response.body[0]).toEqual(expect.objectContaining(expectedObject))
+      expect(response.body).toStrictEqual(expect.objectContaining(createEventBody))
     })
 
     it("should return 401 stats code if dates already occupied", async () => {
       const expectedStatusCode = HttpStatus.BAD_REQUEST
-      await eventRepository.save(eventToSave)
-      const response: Response = await request(app.getHttpServer()).post(path).send(eventToSave)
+      await eventRepository.save(event)
+      const response: Response = await request(app.getHttpServer()).post(path).send(createEventBody)
 
       expect(response.status).toBe(expectedStatusCode)
-      expect(response.body).toEqual(expect.objectContaining({
-        status: expectedStatusCode,
+      expect(response.body).toStrictEqual(expect.objectContaining({
+        statusCode: expectedStatusCode,
         message: "The selected dates are already occupied"
       }))
     })
